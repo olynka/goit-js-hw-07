@@ -2,8 +2,7 @@ import { galleryItems } from './gallery-items.js';
 // Change code below this line
 
 console.log(galleryItems);
-// console.log(handleCreateCards(params));
-function handleCreateCards(colors) {
+function handleCreateCards(event) {
     return galleryItems.map(({ preview, original, description }) => {
             return`<div class="gallery__item">
         <a class="gallery__link" href="${original}">
@@ -21,19 +20,26 @@ const paletteContainer = document.querySelector('.gallery');
 paletteContainer.addEventListener('click',handlePaletteContainerClick);
 
 function handlePaletteContainerClick(evn) {
-const isImagSwatch = evn.target.classList.contains('gallery__item');
-if (!isImagSwatch) {
-    return
+    evn.preventDefault();
+
+      if (evn.target.nodeName !== 'IMG') {
+    return;
+  }
+    const instance = basicLightbox.create(`<img src="${evn.target.dataset.source}">`,{
+        onShow: instance => {
+            window.addEventListener('keydown', closeOnEsc);
+        },
+        onClose: instance => {
+            window.removeEventListener('keydown', closeOnEsc);
+        },
+    });
+
+function closeOnEsc(event) {
+    if (event.code === 'Escape') {
+      instance.close();
+    }
+  }
     
-}
-    
-    console.log(evn.target);
-
-
-const instance = basicLightbox.create(`
-    <img src="${evn.target.dataset.create.sourse}" width="800" height="600">
-`)
-
 instance.show()
 }
-  
+

@@ -2,17 +2,27 @@
 import { galleryItems } from './gallery-items.js';
 // Change code below this line
 console.log(galleryItems);
-const galleryRef = document.querySelector('.gallery');
 
-const template = ({ description, original, preview }) => `<a class="gallery__item" href=${original}>
+console.log(galleryItems);
+function handleCreateCards(event) {
+    return galleryItems.map(({ preview, original, description }) => {
+            return`<li class="gallery__item">
+        <a class="gallery__link" href="${original}">
+        <img class="gallery__image"
+         data-source="${original}"
+         src="${preview}"
+         alt="${description}"
+         /></a></li>`}).join("")
+};
+const paletteContainer = document.querySelector('.gallery');
 
-  <img class="gallery__image" src=${preview} alt='${description}' />
-</a>`;
-const galleryTemplate = galleryItems.map(galleryItem => template(galleryItem)).join('');
-
-galleryRef.insertAdjacentHTML('beforeend', galleryTemplate);
-const lightbox = new SimpleLightbox('.gallery a', {
+ const cardMarking=handleCreateCards(galleryItems)
+    paletteContainer.insertAdjacentHTML('beforeend', cardMarking)
+   
+ const lightbox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
   captionPosition: 'bottom',
   captionDelay: 250,
 });
+
+
